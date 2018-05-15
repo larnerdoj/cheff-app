@@ -1,0 +1,37 @@
+<ion-header>
+  <topo></topo>
+</ion-header>
+
+<ion-content class="header-page-bg fundo-dark">
+
+  <ion-refresher (ionRefresh)="pullRefresher($event)">
+    <ion-refresher-content
+      pullingIcon="ios-arrow-down-outline"
+      pullingText="Solte para atualizar"
+      refreshingSpinner="crescent"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list padding *ngIf="itens?.length === 0">
+    <ion-item class="info-box">
+      <ion-icon name="ios-information-circle-outline" color="danger" item-start padding></ion-icon>
+      <h3>
+        <strong>LISTA DE COMANDAS VAZIA</strong>
+      </h3>
+      <p text-wrap>Você ainda não possui nenhuma comanda</p>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <button ion-item *ngFor="let item of itens" (click)="carregaItem($event, item)" text-wrap>
+      <ion-icon name="ios-people" item-start color="primary" padding></ion-icon>
+      <p padding>
+        <strong>{{item.mesa}}</strong>
+        <br> {{item.cliente}}
+      </p>
+      <ion-icon name="ios-arrow-forward-outline" item-end color="light"></ion-icon>
+    </button>
+  </ion-list>
+
+</ion-content>

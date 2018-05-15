@@ -1,16 +1,254 @@
-// http://ionicframework.com/docs/theming/
+/*GLOBAIS*/
+.item-md{
+    padding-left: 0 !important;
+    font-size: .9em !important;
+    font-weight: 100 !important;
+}
+.sem-fundo{
+    background: none !important;
+}
+.sem-borda, .sem-borda .item-inner{
+    border: none !important;
+}
+.button-block-md{
+    padding: 25px 0 25px 0 !important;
+    font-weight: bold !important;
+}
+.img-user-top{
+    height: 30px !important;
+}
+.padding-left, .item-checkbox .item-inner{
+    padding-left: 15px !important;
+}
 
+/*ALERT*/
+.alert-head{
+    color: color($colors, dark);
+}
+.info-box{
+    border-radius: 10px !important;
 
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
+    ion-icon:before{
+        font-size: 2em;
+    }
+}
+
+/*INPUTS*/
+.item-label-stacked .input-wrapper,
+.item-label-floating .input-wrapper{
+    padding: 0 15px 0 15px !important;
+}
+
+/*HEADER PADRAO*/
+.toolbar-background-md{
+    background: color($colors, primary);
+}
+.logo-header{
+    padding: 0 0 0 15px;
+    height: 25px !important;
+}
+.bar-button-default-md,
+.bar-button-clear-md-default,
+.bar-button-md-default{
+    color: color($colors, light) !important;
+}
+
+/*CORES*/
+.fundo-primary{
+    background: color($colors, primary) !important;
+}
+.fundo-dark{
+    background: color($colors, dark) !important;
+}
+.fundo-dark2{
+    background: color($colors, dark2) !important;
+}
+
+.cor-primary{
+    color: color($colors, primary) !important;
+}
+.cor-light{
+    color: color($colors, light) !important;
+}
+
+.btLogout{
+    display: block;
+    text-align: center;
+}
+.btLogout ion-icon{
+    font-size: 7em;
+    margin-top: 2em;
+}
+
+/*PAGINA LOGIN*/
+page-login{
+
+    .fundo-login{
+        background-size: cover !important;
+    }
+    .logo{
+        top: 8em !important;
+        left: 50%;
+        margin-left: -35%;
+        width: 70%;
+        position: relative;
+    }
+
+    .area-login{
+        position: relative;
+        top: 35%;
+    }
+    .text-input{
+        color: #fff;
+        font-size: 1.5em;
+    }
+    .icon-pass{
+        padding-top:25px !important;
+        color: #00E923;
+        position: relative;
+        z-index: 9999999;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        margin-right: -15px !important;
+    }
+
+}
+
+/*PAGINA HOME*/
+page-home{
+    ion-list{
+        margin-top: -20px !important;
+    }
+    .img-menu{
+        width: 30%;
+        position: relative;
+        left: 36%;
+    }
+    .txt-menu{
+        display: block;
+        width: 100%;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 1em !important;
+        padding: 1em 0 1em 0;
+        color: #fff;
+    }
+    .list-md .item-block .item-inner:first-child{
+        border: none !important;
+    }
+}
+
+.header-page-bg {
+
+  ion-card {
+    position: relative;
+    text-align: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    top: -30px;
+    width: 100% !important;
+    box-shadow: none !important;
+    background: none !important;
+  }
+
+  .card-title {
+    position: absolute;
+    top: 36%;
+    font-size: 1.7em;
+    width: 100%;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .card-subtitle {
+    font-size: .6em;
+    padding-top: 8px;
+    font-weight: normal;
+    position: relative;
+    display: block;
+    width: 100%;
+    color: #fff;
+  }
+
+}
+
+.bt-confirma-pedido{
+    position: absolute;
+    z-index: 9999999;
+    bottom: 0;
+    margin-right: 15px;
+
+    ion-icon:before{
+        font-size: 2em;
+    }
+}
+
+/*DESIGN PAPAER*/
+.comanda-design{
+    position: relative;
+    display: block;
+
+    .paper-top{
+        width: 100%;
+        min-height: 65px;
+        background-image: url('/assets/imgs/paper_top.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center top;
+        margin-bottom: -2px;
+    }
+    .paper-bottom{
+        width: 100%;
+        min-height: 65px;
+        background-image: url('/assets/imgs/paper_bottom.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        margin-top: -2px;
+    }
+    .paper-content{
+        width: 100%;
+        min-height: 100px;
+        padding: 1em;
+        background: #ffff8c;
+        font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+
+        h1, h2, h3, h4, h5, h6{
+            font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+            font-weight: bold;
+        }
+
+        ion-item{
+            background: none !important;
+        }
+        .list-md .item-block .item-inner{
+            border-color: color($colors, dark2);
+        }
+
+        .qtd-itens{
+            font-size: 1.9rem;
+            margin-right: -10px;
+
+            .num-qtd{
+                top: 5px;
+                position: relative;
+            }
+
+            ion-icon:before{
+                font-size: 2.4em;
+            }
+        }
+    }
+}
+
+.input-busca{
+    margin-top: -30px;
+    .searchbar-search-icon{
+        top: 14px !important;
+    }
+    input{
+        padding-top: 9px !important;
+        padding-bottom: 9px !important;
+    }
+}

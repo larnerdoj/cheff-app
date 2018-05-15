@@ -1,0 +1,48 @@
+<ion-header>
+    <topo></topo>
+</ion-header>
+
+<ion-content class="header-page-bg fundo-dark">
+
+    <ion-card>
+        <img [src]="urlImg" />
+        <div class="card-title">
+            ABRIR COMANDA
+            <span class="card-subtitle">Preencha as informações abaixo:</span>
+        </div>
+    </ion-card>
+
+    <ion-list padding *ngIf="caixaAtual === ''">
+        <ion-item class="info-box">
+            <ion-icon name="ios-information-circle-outline" color="danger" item-start padding></ion-icon>
+            <h3>
+                <strong>NÃO EXISTE CAIXA ABERTO</strong>
+            </h3>
+            <p text-wrap>Por favor, entre em contato com o responsável</p>
+        </ion-item>
+    </ion-list>
+
+    <ion-list padding *ngIf="itensMesas?.length > 0">
+
+        <form #form="ngForm" (ngSubmit)="postComanda(form)">
+
+            <button type="button" ion-button block color="dark2" (click)="selecionarMesa()">{{mesaSelecionada.txt}}</button>
+            <ion-input [ngModel]="mesaSelecionada.id" name="mesa" type="hidden"></ion-input>
+            <ion-input [ngModel]="this.StorageService.getItem('u')" name="atendente" type="hidden"></ion-input>
+            <ion-input [ngModel]="tipo_credito" name="tipo_credito" type="hidden"></ion-input>
+            <ion-input [ngModel]="isTaxa" name="taxa" type="hidden"></ion-input>
+            <ion-input [ngModel]="isCouvert" name="couvert" type="hidden"></ion-input>
+
+            <ion-item>
+                <ion-label floating>Nome do Cliente</ion-label>
+                <ion-input [ngModel]="nameCli" name="nome" type="text" (ngModelChange)="nameCli = $event.toLocaleUpperCase()"></ion-input>
+            </ion-item>
+
+            <br>
+            <button type="submit" ion-button block>Adicionar</button>
+
+        </form>
+
+    </ion-list>
+
+</ion-content>

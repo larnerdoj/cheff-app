@@ -1,14 +1,29 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
+  <topo></topo>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content class="header-page-bg fundo-dark">
+
+  <ion-card>
+    <img [src]="urlImg"/>
+    <div class="card-title">
+      {{nomeUser}}, seja bem vindo(a)!
+      <span class="card-subtitle">Escolha uma opção</span>
+    </div>
+  </ion-card>
+
+  <ion-list>
+
+    <button ion-item (click)="verMesas()" class="sem-fundo">
+      <img src="assets/imgs/mesa.png" class="img-menu">
+      <p class="txt-menu">Minhas Mesas</p>
+    </button>
+
+    <button ion-item (click)="novaComanda()" class="sem-fundo"><br>
+      <img src="assets/imgs/comanda.png" class="img-menu">
+      <p class="txt-menu">Abrir Comanda</p>
+    </button>
+
+  </ion-list>
+
 </ion-content>

@@ -1,0 +1,89 @@
+<ion-header>
+  <topo></topo>
+</ion-header>
+
+<ion-content class="header-page-bg fundo-dark">
+
+  <ion-card>
+
+    <ion-fab right class="bt-confirma-pedido" (click)="confirmarPedido()">
+      <button ion-fab>
+        <ion-icon name="md-checkmark"></ion-icon>
+      </button>
+    </ion-fab>
+
+    <img [src]="urlImg" />
+    <div class="card-title">
+      {{itemCarregado?.mesa}}
+      <span class="card-subtitle">{{itemCarregado?.cliente}}</span>
+    </div>
+  </ion-card>
+
+  <div padding>
+    <button type="button" ion-button icon-right block color="dark2" (click)="selecionaCategoria()">
+      Escolher produto
+      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+    </button>
+  </div>
+  <ion-searchbar animated="true" autocomplete="on" placeholder="Pesquisar produto" (ionInput)="filtraProdutos($event)"
+      padding class="input-busca"></ion-searchbar>
+
+  <span ion-text color="primary" *ngIf="!exibeProdutosFiltrados" text-center padding>
+    <p>Digite o nome do produto que deseja adicionar na comanda</p>
+  </span>
+
+  <ion-list *ngIf="exibeProdutosFiltrados">
+
+    <ion-item *ngFor="let item of itens" class="checkbox-circle padding-left">
+      <ion-label>{{item.descricao}}</ion-label>
+      <ion-checkbox color="primary" (ionChange)="addItem(item)"></ion-checkbox>
+    </ion-item>
+
+  </ion-list>
+
+  <div *ngIf="itensComanda.length > 0" class="comanda-design">
+
+    <div class="paper-top"></div>
+    <div class="paper-content">
+
+      <ion-list>
+
+        <ion-item *ngFor="let item of itensComanda; let i = index" text-wrap>
+          <ion-icon name="ios-trash-outline" item-start (click)="deleteItemComanda(i)"></ion-icon>
+
+          <h2>{{item.descricao}}</h2>
+          <p>
+            {{item.vl_unit | currency:'BRL':'1.2-2' }}
+            <br> COD:{{item.codigo}}
+            <span *ngIf="item.obs !== null"><br><strong>{{item.obs}}</strong></span>
+          </p>
+
+          <div item-end class="qtd-itens">
+            <button ion-button clear (click)="setObservacoes(i)">
+              <ion-icon name="ios-list-outline"></ion-icon>
+            </button>
+            <button ion-button clear (click)="delQtd(i)">
+              <ion-icon name="ios-arrow-back-outline"></ion-icon>
+            </button>
+            <span class="num-qtd">{{item.qtd}}</span>
+            <button ion-button clear (click)="addQtd(i)">
+              <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+            </button>
+          </div>
+
+        </ion-item>
+
+      </ion-list>
+
+    </div>
+    <div class="paper-bottom"></div>
+
+  </div>
+
+  <br>
+  <div padding>
+    <button type="button" *ngIf="itensComanda.length > 0" ion-button block (click)="confirmarPedido()">Enviar pedido</button>
+    <button type="button" ion-button block color="danger" (click)="cancelarPedido()">Cancelar pedido</button>
+  </div>
+
+</ion-content>

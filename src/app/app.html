@@ -1,1 +1,39 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content" side="right" type="overlay" persistent="true">
+
+    <ion-content class="fundo-dark2">
+
+        <button menuToggle ion-item class="sem-fundo sem-borda cor-light">
+            <ion-icon name="md-close" class="cor-primary" item-right></ion-icon>
+        </button>
+
+        <br>
+
+        <button menuClose ion-item class="sem-fundo sem-borda cor-light" (click)="voltarRoot()">
+            <span padding>TELA INICIAL</span>
+            <ion-icon name="ios-home-outline" class="cor-primary" item-right></ion-icon>
+        </button>
+
+        <button menuClose ion-item class="sem-fundo sem-borda cor-light" (click)="verMesas()">
+            <span padding>MINHAS MESAS</span>
+            <ion-icon name="ios-people-outline" class="cor-primary" item-right></ion-icon>
+        </button>
+
+        <button menuClose ion-item class="sem-fundo sem-borda cor-light" (click)="novaComanda()">
+            <span padding>ABRIR COMANDA</span>
+            <ion-icon name="ios-copy-outline" class="cor-primary" item-right></ion-icon>
+        </button>
+
+        <button menuClose ion-item class="sem-fundo sem-borda cor-light" (click)="getLogout()">
+            <span padding>LOGOFF</span>
+            <ion-icon name="ios-lock-outline" class="cor-primary" item-right></ion-icon>
+        </button>
+
+        <button menuClose ion-item class="sem-fundo sem-borda cor-light btLogout" (click)="exitApp()">
+            <ion-icon name="ios-power-outline" class="cor-primary"></ion-icon>
+        </button>
+
+    </ion-content>
+
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
