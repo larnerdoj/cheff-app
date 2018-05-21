@@ -91,7 +91,7 @@ export class NovaComandaPage {
                     this.isCouvert = res.json().couvert;
 
                     //CARREGANDO MESAS
-                    this.HttpService.JSON_GET(`/mesas/${this.StorageService.getItem('i')}/${this.StorageService.getItem('u')}`, false, true, 'json')
+                    this.HttpService.JSON_GET(`/mesas/${this.StorageService.getItem('i')}/atendente/${this.StorageService.getItem('u')}`, false, true, 'json')
                       .then(
                         (res) => {
                           this.itensMesas = res.json();
@@ -132,10 +132,9 @@ export class NovaComandaPage {
 
     let check_radio: boolean;
     this.itensMesas.forEach((item, i) => {
-      if (i == 0) { check_radio = true; } else { check_radio = false; }
       alert.addInput({
         type: 'radio',
-        label: `${item.mesa} - ${item.status}`,
+        label: `MESA ${item.mesa} - ${item.status}`,
         value: `${i}`,
         checked: check_radio
       });      
@@ -146,7 +145,7 @@ export class NovaComandaPage {
       text: 'Ok',
       handler: data => {
         this.mesaSelecionada.id = this.itensMesas[data].id;
-        this.mesaSelecionada.txt = this.itensMesas[data].mesa;
+        this.mesaSelecionada.txt = `MESA ${this.itensMesas[data].mesa}`;
       }
     });
     alert.present();

@@ -44,6 +44,7 @@ export class CardapioPage {
 
   exibeProdutosFiltrados: boolean = false;
 
+  itensMesas: any = [];
   itensComanda: any = [];
 
   constructor(
@@ -110,6 +111,58 @@ export class CardapioPage {
                 }
               )
 
+          },
+          (error) => {
+            loading.dismiss();
+            this.AlertService.showAlert('ERRO', error._body);
+          }
+        )
+
+    });
+
+  }
+
+  /************
+  GET MESAS
+  *************/
+  getMesas() {
+
+    //EXECUTA JSON
+    let loading = this.LoadingController.create({
+      spinner: 'crescent',
+      content: 'Carregando mesas'
+    });
+    loading.present().then(() => {
+
+      this.HttpService.JSON_GET(`/comandas/${this.StorageService.getItem('i')}/atendente/${this.StorageService.getItem('u')}`, false, true, 'json')
+        .then(
+          (res) => {
+            this.itensMesas = res.json();
+            loading.dismiss();
+
+            console.log(res.json());
+
+            let alert = this.alertCtrl.create();
+            alert.setTitle('Selecione a mesa');
+
+            let check_radio: boolean;
+            this.itensMesas.forEach((item, i) => {
+              alert.addInput({
+                type: 'radio',
+                label: `MESA ${item.mesa} - ${item.cliente}`,
+                value: item,
+                checked: check_radio
+              });
+            });
+
+            alert.addButton('Cancelar');
+            alert.addButton({
+              text: 'Ok',
+              handler: data => {
+                this.itemCarregado = data;
+              }
+            });
+            alert.present();
           },
           (error) => {
             loading.dismiss();

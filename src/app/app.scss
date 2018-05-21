@@ -87,7 +87,7 @@ page-login{
         background-size: cover !important;
     }
     .logo{
-        top: 8em !important;
+        margin-top: 35% !important;
         left: 50%;
         margin-left: -35%;
         width: 70%;
@@ -96,7 +96,8 @@ page-login{
 
     .area-login{
         position: relative;
-        top: 35%;
+        //top: 15rem !important;
+        margin-top: 25% !important;
     }
     .text-input{
         color: #fff;
@@ -159,6 +160,11 @@ page-home{
     width: 100%;
     font-weight: bold;
     color: #fff;
+
+    .button-inner{
+        font-size: 1.2em;
+        font-weight: bold;
+    }
   }
 
   .card-subtitle {

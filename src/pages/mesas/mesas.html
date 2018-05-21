@@ -27,7 +27,7 @@
     <button ion-item *ngFor="let item of itens" (click)="carregaItem($event, item)" text-wrap>
       <ion-icon name="ios-people" item-start color="primary" padding></ion-icon>
       <p padding>
-        <strong>{{item.mesa}}</strong>
+        <strong>MESA {{item.mesa}}</strong>
         <br> {{item.cliente}}
       </p>
       <ion-icon name="ios-arrow-forward-outline" item-end color="light"></ion-icon>

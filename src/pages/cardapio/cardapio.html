@@ -14,7 +14,9 @@
 
     <img [src]="urlImg" />
     <div class="card-title">
-      {{itemCarregado?.mesa}}
+      <button ion-button round outline large color="light" (click)="getMesas()">
+        MESA {{itemCarregado?.mesa}}
+      </button>
       <span class="card-subtitle">{{itemCarregado?.cliente}}</span>
     </div>
   </ion-card>

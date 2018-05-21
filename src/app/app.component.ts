@@ -11,6 +11,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Push, PushObject, PushOptions } from "@ionic-native/push";
 
 /***********************************************************
 SERVICES
@@ -39,6 +40,7 @@ export class CheffApp {
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
+    public push: Push,
     private StorageService: StorageService,
     public alertCtrl: AlertController
   ){
@@ -50,8 +52,28 @@ export class CheffApp {
     this.rootPage = HomePage:this.rootPage = LoginPage;
     
     platform.ready().then(() => {
-      statusBar.styleDefault();
+      //statusBar.styleDefault();
+      statusBar.backgroundColorByHexString('#00d900');
       splashScreen.hide();
+    });
+  }
+
+  /************************
+  INICIANDO PUSH
+  ************************/  
+  pushStart() {
+    let options: PushOptions = {};
+    let pushObject: PushObject = this.push.init(options);
+
+    pushObject.on("registration").subscribe((registration: any) => { });
+    pushObject.on("notification").subscribe((notification: any) => {
+      if (notification.additionalData.foreground) {
+        let alertPush = this.alertCtrl.create({
+          title: notification.label,
+          message: notification.message
+        });
+        alertPush.present();
+      }
     });
   }
 

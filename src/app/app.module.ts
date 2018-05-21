@@ -11,6 +11,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Push } from "@ionic-native/push";
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
@@ -92,7 +93,9 @@ import { CardapioPage } from '../pages/cardapio/cardapio';
     GlobalsService,
     StorageService,
     HttpService,
-    AlertService
+    AlertService,
+
+    Push
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
