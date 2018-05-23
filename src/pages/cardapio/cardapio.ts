@@ -8,7 +8,7 @@ Page Cardapio
 COMPONENTS
 ***********************************************************/
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 
 /***********************************************************
@@ -18,6 +18,9 @@ import { HttpService } from '../../globals/http';
 import { StorageService } from '../../globals/storage';
 import { GlobalsService } from '../../globals/globals';
 import { AlertService } from '../../globals/alert';
+
+import { ModalComandasPage } from '../../components/modal/modal-comandas';
+import { ModalCategoriasPage } from '../../components/modal/modal-categorias';
 
 /***********************************************************
 PAGES
@@ -32,6 +35,7 @@ import { MesasPage } from './../mesas/mesas';
 export class CardapioPage {
 
   urlImg: any;
+  segmentoSelecionado: string;
 
   itemCarregado: any;
   itens: any;
@@ -52,6 +56,7 @@ export class CardapioPage {
     public NavParams: NavParams,
     public LoadingController: LoadingController,
     public alertCtrl: AlertController,
+    public ModalController: ModalController,
     private CurrencyPipe: CurrencyPipe,
     private DatePipe: DatePipe,
     private HttpService: HttpService,
@@ -64,7 +69,7 @@ export class CardapioPage {
 
     //CARREGANDO ITENS INICIAIS
     this.urlImg = this.GlobalsService.getImgRandom();
-    this.itemCarregado = this.NavParams.get('item');
+    this.itemCarregado = this.GlobalsService.comandaSelecionada;
     this.getItens();
   }
 
@@ -97,24 +102,36 @@ export class CardapioPage {
                     .then(
                       (res) => {
                         this.itensFull = res.json();
-                        loading.dismiss();
+                        
+                        //CARREGANDO COMANDAS ABERTAS
+                        this.HttpService.JSON_GET(`/comandas/${this.StorageService.getItem('i')}/atendente/${this.StorageService.getItem('u')}`, false, true, 'json')
+                          .then(
+                            (res) => {
+                              this.itensMesas = res.json();
+                              loading.dismiss();
+                            },
+                            (error) => {
+                              loading.dismiss();
+                              this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+                            }
+                          )
                       },
                       (error) => {
                         loading.dismiss();
-                        this.AlertService.showAlert('ERRO', error._body);
+                        this.AlertService.showAlert('ERRO', JSON.parse(error._body));
                       }
                     )
                 },
                 (error) => {
                   loading.dismiss();
-                  this.AlertService.showAlert('ERRO', error._body);
+                  this.AlertService.showAlert('ERRO', JSON.parse(error._body));
                 }
               )
 
           },
           (error) => {
             loading.dismiss();
-            this.AlertService.showAlert('ERRO', error._body);
+            this.AlertService.showAlert('ERRO', JSON.parse(error._body));
           }
         )
 
@@ -123,93 +140,37 @@ export class CardapioPage {
   }
 
   /************
-  GET MESAS
+  SELECIONAR COMANDA
   *************/
-  getMesas() {
-
-    //EXECUTA JSON
-    let loading = this.LoadingController.create({
-      spinner: 'crescent',
-      content: 'Carregando mesas'
-    });
-    loading.present().then(() => {
-
-      this.HttpService.JSON_GET(`/comandas/${this.StorageService.getItem('i')}/atendente/${this.StorageService.getItem('u')}`, false, true, 'json')
-        .then(
-          (res) => {
-            this.itensMesas = res.json();
-            loading.dismiss();
-
-            console.log(res.json());
-
-            let alert = this.alertCtrl.create();
-            alert.setTitle('Selecione a mesa');
-
-            let check_radio: boolean;
-            this.itensMesas.forEach((item, i) => {
-              alert.addInput({
-                type: 'radio',
-                label: `MESA ${item.mesa} - ${item.cliente}`,
-                value: item,
-                checked: check_radio
-              });
-            });
-
-            alert.addButton('Cancelar');
-            alert.addButton({
-              text: 'Ok',
-              handler: data => {
-                this.itemCarregado = data;
-              }
-            });
-            alert.present();
-          },
-          (error) => {
-            loading.dismiss();
-            this.AlertService.showAlert('ERRO', error._body);
-          }
-        )
-
-    });
-
+  selecionarComanda() {
+    let modalComanda = this.ModalController.create(ModalComandasPage, {itens: this.itensMesas});
+    modalComanda.present();
   }
 
   /************
-  SELECIONA PRODUTOS POR CATEGORIA
+  SELECIONA SEGMENTO DE BUSCA
   *************/
-  selecionaCategoria() {
-    let alert = this.alertCtrl.create();
-    alert.setTitle('Escolha o tipo de produto');
+  selecionaSegmento(event){
+    this.segmentoSelecionado = event.value;
 
-    this.categorias.forEach((item, i) => {
-      alert.addInput({
-        type: 'radio',
-        label: `${item.categoria}`,
-        value: `${item.categoria}`,
-        checked: false
-      });
-    });
-
-    alert.addButton('Cancelar');
-    alert.addButton({
-      text: 'Ok',
-      handler: data => {
-        data = data.toLowerCase();
-        let filtro = this.itensFull.filter(function (o) {
-          return o['categoria'].toString().toLowerCase().indexOf(data) != -1 || !data;
-        })
-
-        this.itens = filtro;
-        this.exibeProdutosFiltrados = true;
-      }
-    });
-    alert.present();
+    if(this.segmentoSelecionado === 'categorias'){
+      let modalCategorias = this.ModalController.create(ModalCategoriasPage, {itens: this.categorias});
+      modalCategorias.present();
+      modalCategorias.onDidDismiss(()=>{
+        let eventSelect = {
+          target: {
+            value: this.GlobalsService.categoriaSelecionada
+          }
+        };
+        this.filtraProdutos(eventSelect, 'categorias', true);
+      })
+    }
   }
 
   /************
   FILTRA PRODUTOS
   *************/
-  filtraProdutos(event) {
+  filtraProdutos(event, tipo, categoria) {
 
     let val = event.target.value;
     if (val === undefined) {
@@ -228,14 +189,21 @@ export class CardapioPage {
         let filtro;
 
         //VERIFICANDO SE A BUSCA É POR CODIGO
-        if(val.includes('*')){
-          val = val.replace('*', '');
+        if(tipo === 'codigo'){
           filtro = this.itensFull.filter(function (o) {
             return o['codigo'].toString().toLowerCase().indexOf(val) != -1 || !val;
           })
 
           this.itens = filtro;
 
+        }else if(categoria === true){
+
+          filtro = this.itensFull.filter(function (o) {
+            return o['categoria'].toString().toLowerCase().indexOf(val) != -1 || !val;
+          })
+
+          this.itens = filtro;
+          
         }else{//OU GERAL
 
           filtro = this.itensFull.filter(function (o) {
@@ -420,7 +388,7 @@ export class CardapioPage {
                     },
                     (error) => {
                       loading.dismiss();
-                      this.AlertService.showAlert('ERRO', error._body);
+                      this.AlertService.showAlert('ERRO', JSON.parse(error._body));
                     }
                   )
 

@@ -5,22 +5,23 @@
     <ion-list class="area-login">
 
         <form #form="ngForm" (ngSubmit)="getLogin(form)">
-    
+
             <ion-item class="sem-fundo">
                 <ion-label floating>Usuário</ion-label>
                 <ion-input [ngModel]="userUpp" name="usuario" type="text" (ngModelChange)="userUpp = $event.toLocaleUpperCase()"></ion-input>
             </ion-item>
-        
+
             <ion-item class="sem-fundo">
                 <ion-label floating>Senha</ion-label>
                 <ion-input ngModel name="senha" [type]="changeTypeInput"></ion-input>
                 <ion-icon [name]="changeIconView" class="icon-pass" item-right (click)="exibePass()"></ion-icon>
             </ion-item>
 
-            <br><button type="submit" ion-button block>Entrar</button>
+            <br>
+            <button type="submit" ion-button block>Entrar</button>
 
         </form>
-    
+
     </ion-list>
 
 </ion-content>

@@ -1,8 +1,11 @@
 /*GLOBAIS*/
-.item-md{
+.item{
     padding-left: 0 !important;
     font-size: .9em !important;
     font-weight: 100 !important;
+}
+.item p, .item-radio ion-label.label{
+    font-size: 1.1em;
 }
 .sem-fundo{
     background: none !important;
@@ -10,7 +13,7 @@
 .sem-borda, .sem-borda .item-inner{
     border: none !important;
 }
-.button-block-md{
+.button-block{
     padding: 25px 0 25px 0 !important;
     font-weight: bold !important;
 }
@@ -19,6 +22,28 @@
 }
 .padding-left, .item-checkbox .item-inner{
     padding-left: 15px !important;
+}
+.padding-input{
+    font-size: 1.6em !important;
+}
+.btn-padding{
+    padding: 30px 13px 30px 13px !important;
+}
+
+/*SEGMENT*/
+.segment .segment-button,
+.segment .segment-button.segment,
+.segment .segment-button.activated,
+.segment .segment-button.segment-activated{
+    border: none !important;
+    height: auto !important;
+    padding: 10px 10px 0px 10px;
+    border-radius: 5em !important;
+}
+.segment .segment-button.activated,
+.segment .segment-button.segment-activated{
+    background: color($colors, primary);
+    color: color($colors, dark);
 }
 
 /*ALERT*/
@@ -33,6 +58,13 @@
     }
 }
 
+/*BTN*/
+.button-large{
+    padding-top: 35px !important;
+    padding-bottom: 30px !important;
+    font-size: 1.1em !important;
+}
+
 /*INPUTS*/
 .item-label-stacked .input-wrapper,
 .item-label-floating .input-wrapper{
@@ -40,16 +72,16 @@
 }
 
 /*HEADER PADRAO*/
-.toolbar-background-md{
+.toolbar-background{
     background: color($colors, primary);
 }
 .logo-header{
     padding: 0 0 0 15px;
     height: 25px !important;
 }
-.bar-button-default-md,
-.bar-button-clear-md-default,
-.bar-button-md-default{
+.bar-button-default,
+.bar-button-clear-default,
+.bar-button-default{
     color: color($colors, light) !important;
 }
 
@@ -135,7 +167,7 @@ page-home{
         padding: 1em 0 1em 0;
         color: #fff;
     }
-    .list-md .item-block .item-inner:first-child{
+    .list .item-block .item-inner:first-child{
         border: none !important;
     }
 }
@@ -155,7 +187,7 @@ page-home{
 
   .card-title {
     position: absolute;
-    top: 36%;
+    top: 26%;
     font-size: 1.7em;
     width: 100%;
     font-weight: bold;
@@ -183,11 +215,15 @@ page-home{
     position: absolute;
     z-index: 9999999;
     bottom: 0;
-    margin-right: 15px;
+    margin-right: 7px;
 
     ion-icon:before{
         font-size: 2em;
     }
+}
+
+.sts-produto{
+    margin-top: 13px;
 }
 
 /*DESIGN PAPAER*/
@@ -198,7 +234,7 @@ page-home{
     .paper-top{
         width: 100%;
         min-height: 65px;
-        background-image: url('/assets/imgs/paper_top.png');
+        background-image: url('../assets/imgs/paper_top.png');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center top;
@@ -207,7 +243,7 @@ page-home{
     .paper-bottom{
         width: 100%;
         min-height: 65px;
-        background-image: url('/assets/imgs/paper_bottom.png');
+        background-image: url('../assets/imgs/paper_bottom.png');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center bottom;
@@ -228,7 +264,7 @@ page-home{
         ion-item{
             background: none !important;
         }
-        .list-md .item-block .item-inner{
+        .list .item-block .item-inner{
             border-color: color($colors, dark2);
         }
 
@@ -249,12 +285,24 @@ page-home{
 }
 
 .input-busca{
-    margin-top: -30px;
+    margin-top: -15px;
     .searchbar-search-icon{
-        top: 14px !important;
+        top: 20px !important;
     }
     input{
-        padding-top: 9px !important;
-        padding-bottom: 9px !important;
+        padding: 15px 10px 15px 10px !important;
+        padding-left: 50px !important;
+        font-size: 1.3em !important;
+        border-radius: 0 !important;
+        border-bottom: 2px solid color($colors, primary);
+        /* padding-top: 9px !important;
+        padding-bottom: 9px !important; */
     }
+}
+
+/************
+MODAL
+*************/
+ion-modal{
+    border:2em solid rgba(34, 43, 55, 0.9);
 }

@@ -1,0 +1,13 @@
+<ion-content>
+
+    <ion-list radio-group [ngModel]="categoriaSelecionada">
+        <ion-item *ngFor="let item of itensCategoria" text-wrap>
+            <ion-icon name="md-closed-captioning" item-start color="primary" padding></ion-icon>
+            <ion-label>
+                <strong>{{item.categoria}}</strong>
+            </ion-label>
+            <ion-radio (ionSelect)="this.GlobalsService.categoriaSelecionada = item.categoria;fechaModal()" value="{{item.categoria}}"></ion-radio>
+        </ion-item>
+    </ion-list>
+
+</ion-content>

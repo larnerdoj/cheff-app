@@ -8,7 +8,7 @@ Page Nova Comanda
 COMPONENTS
 ***********************************************************/
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, ModalController } from 'ionic-angular';
 
 /***********************************************************
 SERVICES
@@ -17,6 +17,8 @@ import { GlobalsService } from '../../globals/globals';
 import { HttpService } from '../../globals/http';
 import { StorageService } from '../../globals/storage';
 import { AlertService } from '../../globals/alert';
+
+import { ModalMesasPage } from '../../components/modal/modal-mesas';
 
 /***********************************************************
 PAGES
@@ -38,15 +40,12 @@ export class NovaComandaPage {
 
   urlImg: any;
   nameCli: string;
-  mesaSelecionada = {
-    id: null,
-    txt: '(selecione a mesa)'
-  };
 
   constructor(
     public navCtrl: NavController,
     public AlertController: AlertController,
     public LoadingController: LoadingController,
+    public ModalController: ModalController,
     private GlobalsService: GlobalsService,
     private HttpService: HttpService,
     private StorageService: StorageService,
@@ -57,6 +56,8 @@ export class NovaComandaPage {
     this.urlImg = this.GlobalsService.getImgRandom();
 
     //CARREGANDO ITENS INICIAIS
+    this.GlobalsService.mesaSelecionada.id = null;
+    this.GlobalsService.mesaSelecionada.txt = '(selecione a mesa)';
     this.getCaixaAtual();
   }
 
@@ -101,13 +102,13 @@ export class NovaComandaPage {
                         },
                         (error) => {
                           loading.dismiss();
-                          this.AlertService.showAlert('ERRO', error._body);
+                          this.AlertService.showAlert('ERRO', JSON.parse(error._body));
                         }
                       )
                   },
                   (error) => {
                     loading.dismiss();
-                    this.AlertService.showAlert('ERRO', error._body);
+                    this.AlertService.showAlert('ERRO', JSON.parse(error._body));
                   }
                 )
             }
@@ -115,7 +116,7 @@ export class NovaComandaPage {
           },
           (error) => {
             loading.dismiss();
-            this.AlertService.showAlert('ERRO', error._body);
+            this.AlertService.showAlert('ERRO', JSON.parse(error._body));
           }
         )
 
@@ -127,29 +128,8 @@ export class NovaComandaPage {
   SELECT MESA
   *************/
   selecionarMesa(){
-    let alert = this.AlertController.create();
-    alert.setTitle('Selecione a mesa');
-
-    let check_radio: boolean;
-    this.itensMesas.forEach((item, i) => {
-      alert.addInput({
-        type: 'radio',
-        label: `MESA ${item.mesa} - ${item.status}`,
-        value: `${i}`,
-        checked: check_radio
-      });      
-    });
-
-    alert.addButton('Cancelar');
-    alert.addButton({
-      text: 'Ok',
-      handler: data => {
-        this.mesaSelecionada.id = this.itensMesas[data].id;
-        this.mesaSelecionada.txt = `MESA ${this.itensMesas[data].mesa}`;
-      }
-    });
-    alert.present();
-
+    let carregaModal = this.ModalController.create(ModalMesasPage, {itens: this.itensMesas});
+    carregaModal.present();
   }
 
   /************
@@ -182,7 +162,7 @@ export class NovaComandaPage {
             },
             (error) => {
               loading.dismiss();
-              this.AlertService.showAlert('ERRO', error._body);
+              this.AlertService.showAlert('ERRO', JSON.parse(error._body));
             }
           )
 

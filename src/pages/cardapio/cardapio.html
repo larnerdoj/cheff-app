@@ -14,31 +14,70 @@
 
     <img [src]="urlImg" />
     <div class="card-title">
-      <button ion-button round outline large color="light" (click)="getMesas()">
-        MESA {{itemCarregado?.mesa}}
+      <button ion-button round outline large color="light" (click)="selecionarComanda()">
+        <strong>MESA {{this.GlobalsService.comandaSelecionada.mesa}}</strong>
       </button>
-      <span class="card-subtitle">{{itemCarregado?.cliente}}</span>
+      <span class="card-subtitle">
+        <strong>{{this.GlobalsService.comandaSelecionada.cliente}}</strong>
+      </span>
     </div>
   </ion-card>
 
-  <div padding>
-    <button type="button" ion-button icon-right block color="dark2" (click)="selecionaCategoria()">
-      Escolher produto
-      <ion-icon name="ios-arrow-forward-outline"></ion-icon>
-    </button>
+  <div padding style="margin-top:-30px">
+    <ion-segment [(ngModel)]="icons" color="light">
+      <ion-segment-button value="categorias" (ionSelect)="selecionaSegmento($event)">
+        <ion-icon name="ios-keypad-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="codigo" (ionSelect)="selecionaSegmento($event)">
+        <ion-icon name="ios-calculator-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="busca" (ionSelect)="selecionaSegmento($event)">
+        <ion-icon name="ios-search-outline"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
   </div>
-  <ion-searchbar animated="true" autocomplete="on" placeholder="Pesquisar produto" (ionInput)="filtraProdutos($event)"
-      padding class="input-busca"></ion-searchbar>
+
+  <ion-list padding *ngIf="segmentoSelecionado === 'busca'">
+    <ion-item>
+      <ion-label floating>Digite o que procura</ion-label>
+      <ion-input type="text" class="padding-input" autofocus (keyup)="filtraProdutos($event, 'geral', false)"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list padding *ngIf="segmentoSelecionado === 'codigo'">
+    <ion-item>
+      <ion-label floating>Informe o código do item</ion-label>
+      <ion-input type="number" class="padding-input" autofocus (keyup)="filtraProdutos($event, 'codigo', false)"></ion-input>
+    </ion-item>
+  </ion-list>
 
   <span ion-text color="primary" *ngIf="!exibeProdutosFiltrados" text-center padding>
     <p>Digite o nome do produto que deseja adicionar na comanda</p>
   </span>
 
-  <ion-list *ngIf="exibeProdutosFiltrados">
+  <br *ngIf="segmentoSelecionado === 'categorias'">
 
-    <ion-item *ngFor="let item of itens" class="checkbox-circle padding-left">
-      <ion-label>{{item.descricao}}</ion-label>
-      <ion-checkbox color="primary" (ionChange)="addItem(item)"></ion-checkbox>
+  <ion-list padding *ngIf="exibeProdutosFiltrados" style="margin-top:-31px;">
+
+    <ion-item *ngFor="let item of itens" class="padding-left" text-wrap>
+      <ion-label>
+        <ion-grid>
+          <ion-row>
+
+            <ion-col col-1>
+              <img src="assets/imgs/active.png" *ngIf="item.status === 'DISPONIVEL'" class="sts-produto">
+              <img src="assets/imgs/inactive.png" *ngIf="item.status === 'INDISPONIVEL'" class="sts-produto">
+            </ion-col>
+            <ion-col col-11>
+              {{item.codigo}}
+              <br>
+              <h4>{{item.descricao}}</h4>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </ion-label>
+      <ion-radio [disabled]="item.status === 'INDISPONIVEL'" color="primary" (ionSelect)="addItem(item)"></ion-radio>
     </ion-item>
 
   </ion-list>
@@ -51,24 +90,27 @@
       <ion-list>
 
         <ion-item *ngFor="let item of itensComanda; let i = index" text-wrap>
-          <ion-icon name="ios-trash-outline" item-start (click)="deleteItemComanda(i)"></ion-icon>
+          <ion-icon item-start name="ios-trash-outline" class="btn-padding" (click)="deleteItemComanda(i)"></ion-icon>
 
           <h2>{{item.descricao}}</h2>
           <p>
             {{item.vl_unit | currency:'BRL':'1.2-2' }}
             <br> COD:{{item.codigo}}
-            <span *ngIf="item.obs !== null"><br><strong>{{item.obs}}</strong></span>
+            <span *ngIf="item.obs !== null">
+              <br>
+              <strong>{{item.obs}}</strong>
+            </span>
           </p>
 
           <div item-end class="qtd-itens">
-            <button ion-button clear (click)="setObservacoes(i)">
+            <button ion-button class="btn-padding" clear (click)="setObservacoes(i)">
               <ion-icon name="ios-list-outline"></ion-icon>
             </button>
-            <button ion-button clear (click)="delQtd(i)">
+            <button ion-button class="btn-padding" clear (click)="delQtd(i)">
               <ion-icon name="ios-arrow-back-outline"></ion-icon>
             </button>
             <span class="num-qtd">{{item.qtd}}</span>
-            <button ion-button clear (click)="addQtd(i)">
+            <button ion-button class="btn-padding" clear (click)="addQtd(i)">
               <ion-icon name="ios-arrow-forward-outline"></ion-icon>
             </button>
           </div>
@@ -82,10 +124,9 @@
 
   </div>
 
-  <br>
   <div padding>
-    <button type="button" *ngIf="itensComanda.length > 0" ion-button block (click)="confirmarPedido()">Enviar pedido</button>
-    <button type="button" ion-button block color="danger" (click)="cancelarPedido()">Cancelar pedido</button>
+    <button type="button" large *ngIf="itensComanda.length > 0" ion-button block (click)="confirmarPedido()">Enviar pedido</button>
+    <button type="button" large ion-button block color="danger" (click)="cancelarPedido()">Cancelar pedido</button>
   </div>
 
 </ion-content>

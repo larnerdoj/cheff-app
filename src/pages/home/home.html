@@ -5,7 +5,7 @@
 <ion-content class="header-page-bg fundo-dark">
 
   <ion-card>
-    <img [src]="urlImg"/>
+    <img [src]="urlImg" />
     <div class="card-title">
       {{nomeUser}}, seja bem vindo(a)!
       <span class="card-subtitle">Escolha uma opção</span>
@@ -19,7 +19,8 @@
       <p class="txt-menu">Minhas Mesas</p>
     </button>
 
-    <button ion-item (click)="novaComanda()" class="sem-fundo"><br>
+    <button ion-item (click)="novaComanda()" class="sem-fundo">
+      <br>
       <img src="assets/imgs/comanda.png" class="img-menu">
       <p class="txt-menu">Abrir Comanda</p>
     </button>

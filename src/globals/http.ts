@@ -28,8 +28,8 @@ export class HttpService {
         private http: Http,
         private StorageService: StorageService
     ) {
-        //this.URL_api = 'http://localhost:13579/api';
-        this.URL_api = 'http://192.168.1.123:13579/api';//RASP
+        //this.URL_api = 'http://192.168.0.6:13579/api';
+        this.URL_api = 'http://121.122.123.2:13579/api';//RASP
     }
 
     /************

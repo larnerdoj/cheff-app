@@ -15,12 +15,13 @@ SERVICES
 ***********************************************************/
 import { HttpService } from '../../globals/http';
 import { StorageService } from '../../globals/storage';
+import { AlertService } from '../../globals/alert';
+import { GlobalsService } from '../../globals/globals';
 
 /***********************************************************
 PAGES
 ***********************************************************/
 import { CardapioPage } from '../cardapio/cardapio';
-import { AlertService } from '../../globals/alert';
 
 @Component({
   selector: 'page-mesas',
@@ -35,7 +36,8 @@ export class MesasPage {
     public LoadingController: LoadingController,
     public AlertService: AlertService,
     private HttpService: HttpService,
-    private StorageService: StorageService
+    private StorageService: StorageService,
+    private GlobalsService: GlobalsService
   ) { }
 
   ionViewDidLoad() {
@@ -75,7 +77,7 @@ export class MesasPage {
           },
           (error) => {
             loading.dismiss();
-            this.AlertService.showAlert('ERRO', error._body);
+            this.AlertService.showAlert('ERRO', JSON.parse(error._body));
           }
         )
 
@@ -83,8 +85,9 @@ export class MesasPage {
 
   }
 
-  carregaItem(event, item) {
-    this.navCtrl.push(CardapioPage, { item: item });
+  carregaComanda(item) {
+    this.GlobalsService.comandaSelecionada = item;
+    this.navCtrl.push(CardapioPage);
   }
 
 }

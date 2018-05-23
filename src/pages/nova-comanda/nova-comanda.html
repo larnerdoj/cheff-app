@@ -26,8 +26,8 @@
 
         <form #form="ngForm" (ngSubmit)="postComanda(form)">
 
-            <button type="button" ion-button block color="dark2" (click)="selecionarMesa()">{{mesaSelecionada.txt}}</button>
-            <ion-input [ngModel]="mesaSelecionada.id" name="mesa" type="hidden"></ion-input>
+            <button type="button" large ion-button block color="dark2" (click)="selecionarMesa()">{{this.GlobalsService.mesaSelecionada.txt}}</button>
+            <ion-input [ngModel]="this.GlobalsService.mesaSelecionada.id" name="mesa" type="hidden"></ion-input>
             <ion-input [ngModel]="this.StorageService.getItem('u')" name="atendente" type="hidden"></ion-input>
             <ion-input [ngModel]="tipo_credito" name="tipo_credito" type="hidden"></ion-input>
             <ion-input [ngModel]="isTaxa" name="taxa" type="hidden"></ion-input>
@@ -35,11 +35,11 @@
 
             <ion-item>
                 <ion-label floating>Nome do Cliente</ion-label>
-                <ion-input [ngModel]="nameCli" name="nome" type="text" (ngModelChange)="nameCli = $event.toLocaleUpperCase()"></ion-input>
+                <ion-input [ngModel]="nameCli" name="nome" type="text" class="padding-input" (ngModelChange)="nameCli = $event.toLocaleUpperCase()"></ion-input>
             </ion-item>
 
             <br>
-            <button type="submit" ion-button block>Adicionar</button>
+            <button type="submit" large ion-button block>Adicionar</button>
 
         </form>
 

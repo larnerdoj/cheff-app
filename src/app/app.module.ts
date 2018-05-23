@@ -25,6 +25,9 @@ registerLocaleData(localePt, 'pt');
 GLOBALS - SHAREDS
 ***********************************************************/
 import { TopoComponent } from '../components/topo/topo';
+import { ModalMesasPage } from '../components/modal/modal-mesas';
+import { ModalComandasPage } from '../components/modal/modal-comandas';
+import { ModalCategoriasPage } from '../components/modal/modal-categorias';
 
 /***********************************************************
 SERVICES
@@ -47,12 +50,16 @@ import { CardapioPage } from '../pages/cardapio/cardapio';
 @NgModule({
   declarations: [
     CheffApp,
-    TopoComponent,
     LoginPage,
     HomePage,
     MesasPage,
     NovaComandaPage,
-    CardapioPage
+    CardapioPage,
+
+    TopoComponent,
+    ModalMesasPage,
+    ModalComandasPage,
+    ModalCategoriasPage
   ],
   imports: [
     BrowserModule,
@@ -78,7 +85,11 @@ import { CardapioPage } from '../pages/cardapio/cardapio';
     HomePage,
     MesasPage,
     NovaComandaPage,
-    CardapioPage
+    CardapioPage,
+
+    ModalMesasPage,
+    ModalComandasPage,
+    ModalCategoriasPage
   ],
   providers: [
     StatusBar,

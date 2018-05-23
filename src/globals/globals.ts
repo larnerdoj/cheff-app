@@ -13,6 +13,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Injectable()
 export class GlobalsService {
 
+    mesaSelecionada = {
+        id: null,
+        txt: null
+    };
+
+    comandaSelecionada: any;
+    
+    categoriaSelecionada: string = null;
+
     constructor(
         public DomSanitizer: DomSanitizer,
     ) { }

@@ -84,7 +84,7 @@ export class LoginPage {
             },
             (error) => {
               loading.dismiss();
-              this.AlertService.showAlert('ERRO', error._body);
+              this.AlertService.showAlert('ERRO', JSON.parse(error._body));
             }
           )
 

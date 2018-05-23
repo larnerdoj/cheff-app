@@ -5,10 +5,7 @@
 <ion-content class="header-page-bg fundo-dark">
 
   <ion-refresher (ionRefresh)="pullRefresher($event)">
-    <ion-refresher-content
-      pullingIcon="ios-arrow-down-outline"
-      pullingText="Solte para atualizar"
-      refreshingSpinner="crescent"
+    <ion-refresher-content pullingIcon="ios-arrow-down-outline" pullingText="Solte para atualizar" refreshingSpinner="crescent"
       refreshingText="Atualizando...">
     </ion-refresher-content>
   </ion-refresher>
@@ -24,11 +21,11 @@
   </ion-list>
 
   <ion-list>
-    <button ion-item *ngFor="let item of itens" (click)="carregaItem($event, item)" text-wrap>
+    <button ion-item *ngFor="let item of itens" (click)="carregaComanda(item)" text-wrap>
       <ion-icon name="ios-people" item-start color="primary" padding></ion-icon>
       <p padding>
         <strong>MESA {{item.mesa}}</strong>
-        <br> {{item.cliente}}
+        <br>{{item.cliente}}
       </p>
       <ion-icon name="ios-arrow-forward-outline" item-end color="light"></ion-icon>
     </button>

@@ -1,0 +1,13 @@
+<ion-content>
+
+    <ion-list radio-group [ngModel]="mesaSelecionada">
+        <ion-item *ngFor="let item of itensMesas" text-wrap>
+            <ion-icon name="ios-people" item-start color="primary" padding></ion-icon>
+            <ion-label>
+                <strong>MESA {{item.mesa}}</strong> - {{item.status}}</ion-label>
+            <ion-radio (ionSelect)="this.GlobalsService.mesaSelecionada.id = item.id;this.GlobalsService.mesaSelecionada.txt = 'MESA '+item.mesa;fechaModal()"
+                value="{{item.id}}"></ion-radio>
+        </ion-item>
+    </ion-list>
+
+</ion-content>
