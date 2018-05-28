@@ -8,7 +8,7 @@ Componente principal da aplicacao
 COMPONENTS
 ***********************************************************/
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController } from 'ionic-angular';
+import { Nav, Platform, AlertController, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Push, PushObject, PushOptions } from "@ionic-native/push";
@@ -17,6 +17,8 @@ import { Push, PushObject, PushOptions } from "@ionic-native/push";
 SERVICES
 ***********************************************************/
 import { StorageService } from '../globals/storage';
+import { HttpService } from '../globals/http';
+import { AlertService } from '../globals/alert';
 
 /***********************************************************
 PAGES
@@ -42,14 +44,55 @@ export class CheffApp {
     splashScreen: SplashScreen,
     public push: Push,
     private StorageService: StorageService,
-    public alertCtrl: AlertController
+    private HttpService: HttpService,
+    private AlertService: AlertService,
+    public alertCtrl: AlertController,
+    public LoadingController: LoadingController
   ){
 
     this.platform = platform;
 
-    //VERIFICANDO SE USUARIO ESTA LOGADO
-    (this.StorageService.getItem('l') && this.StorageService.getItem('l') !== null)?
-    this.rootPage = HomePage:this.rootPage = LoginPage;
+    //VERIFICANDO SE USUARIO ESTA LOGADO E TOKEN VALIDO
+    if(!this.StorageService.getItem('l')
+      || this.StorageService.getItem('l') === null
+      || !this.StorageService.getItem('i')
+      || this.StorageService.getItem('i') === null
+      || !this.StorageService.getItem('u')
+      || this.StorageService.getItem('u') === null
+    ){
+      this.rootPage = LoginPage;
+      this.StorageService.clear();
+
+    }else{
+
+      //EXECUTA JSON
+      let loading = this.LoadingController.create({
+        spinner: 'crescent',
+        content: 'Verificando usuário'
+      });
+      loading.present().then(() => {
+
+        this.HttpService.JSON_GET(`/atendentes/auth/token/${this.StorageService.getItem('u')}`, true, true, 'json')
+          .then(
+            (res) => {
+              if(res.json() === true){ this.rootPage = HomePage }
+              else{
+                this.StorageService.clear();
+                this.rootPage = LoginPage;
+              }
+              loading.dismiss();
+            },
+            (error) => {
+              loading.dismiss();
+              this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+            }
+          )
+
+      });
+
+    }
+    /* (this.StorageService.getItem('l') && this.StorageService.getItem('l') !== null)?
+    this.rootPage = HomePage:this.rootPage = LoginPage; */
     
     platform.ready().then(() => {
       //statusBar.styleDefault();

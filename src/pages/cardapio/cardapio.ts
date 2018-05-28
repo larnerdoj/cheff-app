@@ -428,7 +428,7 @@ export class CardapioPage {
       itemImpressao['Header'] = this.StorageService.getItem('n');
       
       itemImpressao['Content'] = {};
-      itemImpressao['Content'][0] = `${this.itemCarregado.mesa} / ${this.itemCarregado.cliente}`;
+      itemImpressao['Content'][0] = `MESA ${this.itemCarregado.mesa} / ${this.itemCarregado.cliente}`;
       itemImpressao['Content'][1] = `(${this.itensComanda[i].qtd}x) - ${this.itensComanda[i].descricao}`;
       itemImpressao['Content'][2] = this.itensComanda[i].obs;
       
