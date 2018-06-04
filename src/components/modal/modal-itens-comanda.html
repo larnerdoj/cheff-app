@@ -1,0 +1,42 @@
+<ion-content>
+
+    <ion-list padding *ngIf="itensComanda?.length === 0">
+        <ion-item class="info-box">
+            <ion-icon name="ios-information-circle-outline" color="danger" item-start padding></ion-icon>
+            <h3>
+                <strong>LISTA DE PEDIDOS VAZIA</strong>
+            </h3>
+            <p text-wrap>Você ainda não efetuou nenhum pedido para este cliente</p>
+        </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="itensComanda?.length > 0" class="lista-itens-comanda">
+        <ion-item *ngFor="let item of itensComanda; let i = index;" text-wrap [ngClass]="(i % 2 == 0) ? 'zebra' : ''">
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-8>
+                        <strong>{{item.prod_desc}}</strong>
+                        <br>{{item.obs}}
+                    </ion-col>
+                    <ion-col col-4 class="col-light">
+                        <button ion-button clear end (click)="addItemPedido(i)">
+                            {{item.qtd}} &nbsp;&nbsp;
+                            <ion-icon name="md-add-circle"></ion-icon>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-item>
+    </ion-list>
+
+    <ion-footer>
+        <div padding>
+            <h1 text-center>{{dadosComanda?.vl_total | currency:'BRL':'1.2-2'}}</h1>
+            <button type="button" large block
+            ion-button color="danger" (click)="fechaModal()">
+                Cancelar
+            </button>
+        </div>
+    </ion-footer>
+
+</ion-content>

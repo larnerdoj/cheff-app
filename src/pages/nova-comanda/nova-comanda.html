@@ -30,8 +30,8 @@
             <ion-input [ngModel]="this.GlobalsService.mesaSelecionada.id" name="mesa" type="hidden"></ion-input>
             <ion-input [ngModel]="this.StorageService.getItem('u')" name="atendente" type="hidden"></ion-input>
             <ion-input [ngModel]="tipo_credito" name="tipo_credito" type="hidden"></ion-input>
-            <ion-input [ngModel]="isTaxa" name="taxa" type="hidden"></ion-input>
-            <ion-input [ngModel]="isCouvert" name="couvert" type="hidden"></ion-input>
+            <ion-input [ngModel]="this.GlobalsService.isTaxa" name="taxa" type="hidden"></ion-input>
+            <ion-input [ngModel]="this.GlobalsService.isCouvert" name="couvert" type="hidden"></ion-input>
 
             <ion-item>
                 <ion-label floating>Nome do Cliente</ion-label>

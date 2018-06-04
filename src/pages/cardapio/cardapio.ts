@@ -21,6 +21,7 @@ import { AlertService } from '../../globals/alert';
 
 import { ModalComandasPage } from '../../components/modal/modal-comandas';
 import { ModalCategoriasPage } from '../../components/modal/modal-categorias';
+import { ModalItensComandaPage } from '../../components/modal/modal-itens-comanda';
 
 /***********************************************************
 PAGES
@@ -137,6 +138,14 @@ export class CardapioPage {
 
     });
 
+  }
+
+  /************
+  EXIBIR ITENS COMANDA
+  *************/
+  exibirItensComanda() {
+    let modalItensComanda = this.ModalController.create(ModalItensComandaPage, {comanda: this.itemCarregado});
+    modalItensComanda.present();
   }
 
   /************
@@ -351,56 +360,62 @@ export class CardapioPage {
   *************/
   confirmarPedido(){
 
-    let alert = this.alertCtrl.create({
-      title: 'Enviar pedido?',
-      message: 'Confirme seu pedido para inciar o preparo!',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {}
-        },
-        {
-          text: 'Enviar',
-          handler: () => {
-            
-            Promise.resolve(this.calculaTotal())
-            .then(() => {
+    if(this.itensComanda.length > 0){
 
-              //CRIANDO OBJETO COM TOTAL
-              let objPost = [{
-                total: this.totalPedido,
-                itens: this.itensComanda
-              }];
+      let alert = this.alertCtrl.create({
+        title: 'Enviar pedido?',
+        message: 'Confirme seu pedido para inciar o preparo!',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {}
+          },
+          {
+            text: 'Enviar',
+            handler: () => {
+              
+              Promise.resolve(this.calculaTotal())
+              .then(() => {
 
-              //EXECUTA JSON
-              let loading = this.LoadingController.create({
-                spinner: 'crescent',
-                content: 'Enviando pedido'
-              });
-              loading.present().then(() => {
+                //CRIANDO OBJETO COM TOTAL
+                let objPost = [{
+                  total: this.totalPedido,
+                  itens: this.itensComanda
+                }];
 
-                this.HttpService.JSON_POST(`/comandas/${this.itemCarregado.id}/itens/${this.StorageService.getItem('i')}`, objPost, false, true, 'json')
-                  .then(
-                    (res) => {
-                      this.enviaImpressao();
-                      loading.dismiss();
-                    },
-                    (error) => {
-                      loading.dismiss();
-                      this.AlertService.showAlert('ERRO', JSON.parse(error._body));
-                    }
-                  )
+                //EXECUTA JSON
+                let loading = this.LoadingController.create({
+                  spinner: 'crescent',
+                  content: 'Enviando pedido'
+                });
+                loading.present().then(() => {
 
-              });
+                  this.HttpService.JSON_POST(`/comandas/${this.itemCarregado.id}/itens/${this.StorageService.getItem('i')}`, objPost, false, true, 'json')
+                    .then(
+                      (res) => {
+                        this.enviaImpressao();
+                        loading.dismiss();
+                      },
+                      (error) => {
+                        loading.dismiss();
+                        this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+                      }
+                    )
 
-            })
+                });
 
+              })
+
+            }
           }
-        }
-      ]
-    });
-    alert.present();
+        ]
+      });
+      alert.present();
+
+    }else{
+      this.AlertService.showAlert('ATENÇÃO', 'Você ainda não adicionou nenhum item ao pedido!');
+    }
 
   }
 

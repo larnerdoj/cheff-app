@@ -16,6 +16,7 @@ import { Push, PushObject, PushOptions } from "@ionic-native/push";
 /***********************************************************
 SERVICES
 ***********************************************************/
+import { GlobalsService } from '../globals/globals';
 import { StorageService } from '../globals/storage';
 import { HttpService } from '../globals/http';
 import { AlertService } from '../globals/alert';
@@ -43,6 +44,7 @@ export class CheffApp {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     public push: Push,
+    private GlobalsService: GlobalsService,
     private StorageService: StorageService,
     private HttpService: HttpService,
     private AlertService: AlertService,
@@ -52,47 +54,97 @@ export class CheffApp {
 
     this.platform = platform;
 
-    //VERIFICANDO SE USUARIO ESTA LOGADO E TOKEN VALIDO
-    if(!this.StorageService.getItem('l')
-      || this.StorageService.getItem('l') === null
-      || !this.StorageService.getItem('i')
-      || this.StorageService.getItem('i') === null
-      || !this.StorageService.getItem('u')
-      || this.StorageService.getItem('u') === null
-    ){
-      this.rootPage = LoginPage;
-      this.StorageService.clear();
+    //VERIFICANDO VERSAO DO APP
+    let loading = this.LoadingController.create({
+      spinner: 'crescent'
+    });
+    loading.present().then(() => {
 
-    }else{
-
-      //EXECUTA JSON
-      let loading = this.LoadingController.create({
-        spinner: 'crescent',
-        content: 'Verificando usuário'
-      });
-      loading.present().then(() => {
-
-        this.HttpService.JSON_GET(`/atendentes/auth/token/${this.StorageService.getItem('u')}`, true, true, 'json')
-          .then(
-            (res) => {
-              if(res.json() === true){ this.rootPage = HomePage }
-              else{
-                this.StorageService.clear();
+      this.HttpService.JSON_GET(`/versao`, true, true, 'json')
+        .then(
+          (res) => {
+            loading.dismiss();
+            if(res.json().APPGARCOM === this.GlobalsService.VersaoAPP){
+              
+              //VERIFICANDO SE USUARIO ESTA LOGADO E TOKEN VALIDO
+              if(!this.StorageService.getItem('l')
+                || this.StorageService.getItem('l') === null
+                || !this.StorageService.getItem('i')
+                || this.StorageService.getItem('i') === null
+                || !this.StorageService.getItem('u')
+                || this.StorageService.getItem('u') === null
+                || !this.StorageService.getItem('p_init')
+                || this.StorageService.getItem('p_init') === null
+                || !this.StorageService.getItem('p_finish')
+                || this.StorageService.getItem('p_finish') === null
+              ){
                 this.rootPage = LoginPage;
+                this.StorageService.clear();
+
+              }else{
+
+                //EXECUTA JSON
+                let loading = this.LoadingController.create({
+                  spinner: 'crescent',
+                  content: 'Verificando usuário'
+                });
+                loading.present().then(() => {
+
+                  this.HttpService.JSON_GET(`/atendentes/auth/token/${this.StorageService.getItem('u')}`, true, true, 'json')
+                    .then(
+                      (res) => {
+                        if(res.json() === true){ this.rootPage = HomePage }
+                        else{
+                          this.StorageService.clear();
+                          this.rootPage = LoginPage;
+                        }
+                        loading.dismiss();
+                      },
+                      (error) => {
+                        loading.dismiss();
+                        this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+                      }
+                    )
+
+                });
+
               }
-              loading.dismiss();
-            },
-            (error) => {
-              loading.dismiss();
-              this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+
+            }else{
+              this.rootPage = LoginPage;
+
+              //REDIRECIONANDO PARA LOJA
+              let alert = this.alertCtrl.create({
+                title: 'Aplicativo desatualizado?',
+                message: 'Clique em ATUALIZAR para realiazar a atualização?',
+                buttons: [
+                  {
+                    text: 'Atualizar',
+                    handler: () => {
+                      
+                      if(this.platform.is('android')){
+                        window.open(this.GlobalsService.lojaAndroid, '_system');
+
+                      }else if(this.platform.is('ios')){}
+                      else if(this.platform.is('windows')){}
+                      else{}
+
+                      this.StorageService.clear();
+                      this.platform.exitApp();
+                    }
+                  }
+                ]
+              });
+              alert.present();
             }
-          )
+          },
+          (error) => {
+            loading.dismiss();
+            this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+          }
+        )
 
-      });
-
-    }
-    /* (this.StorageService.getItem('l') && this.StorageService.getItem('l') !== null)?
-    this.rootPage = HomePage:this.rootPage = LoginPage; */
+    });
     
     platform.ready().then(() => {
       //statusBar.styleDefault();
@@ -151,10 +203,7 @@ export class CheffApp {
           text: 'Sair',
           handler: () => {
 
-            this.StorageService.deleteItem('i');
-            this.StorageService.deleteItem('u');
-            this.StorageService.deleteItem('n');
-            this.StorageService.deleteItem('l');
+            this.StorageService.clear();
 
             this.rootPage = LoginPage;
             this.nav.setRoot(LoginPage, {}, { animate: true, direction: 'forward' });

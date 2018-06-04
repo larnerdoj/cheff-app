@@ -49,6 +49,30 @@
 /*ALERT*/
 .alert-head{
     color: color($colors, dark);
+    padding: 5px 20px 5px 20px !important;
+}
+.alert-title{
+    font-size: 3em;
+}
+.alert-message{
+    padding: 0 20px 10px 20px !important;
+}
+.alert-button-group{
+    padding: 0 !important;
+}
+.alert-head::before{
+    color: color($colors, primary);
+    content: "\f19f";
+    font-family: "Ionicons";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 5em;
+    display: block;
+    text-align: center;
+}
+.alert-head h2, .alert-message{
+    display: block;
+    text-align: center;
 }
 .info-box{
     border-radius: 10px !important;
@@ -305,4 +329,34 @@ MODAL
 *************/
 ion-modal{
     border:2em solid rgba(34, 43, 55, 0.9);
+}
+
+/************
+FOOTER
+*************/
+ion-footer{
+    background: color($colors, light);
+}
+
+.lista-itens-comanda{
+
+    .col-light{
+        border-left: 1px dashed color($colors, light) !important;
+    }
+
+    .button-md{
+        position: absolute;
+        right: 0 !important;
+        padding: 0 !important;
+        margin-top: -0.8rem !important;
+        font-size: 2rem !important;
+
+        ion-icon:before{
+            font-size: 4rem !important;
+        }
+    }
+}
+
+.zebra{
+    background: #f9f9f9;
 }

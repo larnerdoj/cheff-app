@@ -35,8 +35,6 @@ export class NovaComandaPage {
 
   itensMesas: any;
   tipo_credito: string = '00000000011';
-  isTaxa: boolean = false;
-  isCouvert: boolean = false;
 
   urlImg: any;
   nameCli: string;
@@ -84,27 +82,14 @@ export class NovaComandaPage {
             } else {
               this.caixaAtual = res.json()[0].id;
 
-              //CARREGANDO CONFIGURACOES
-              this.HttpService.JSON_GET(`/configuracoes/${this.StorageService.getItem('i')}`, false, true, 'json')
+              //CARREGANDO MESAS
+              this.HttpService.JSON_GET(`/mesas/${this.StorageService.getItem('i')}/atendente/${this.StorageService.getItem('u')}/${this.StorageService.getItem('p_init')}/${this.StorageService.getItem('p_finish')}`, false, true, 'json')
                 .then(
                   (res) => {
-                    this.isTaxa = res.json().rate;
-                    this.isCouvert = res.json().couvert;
+                    this.itensMesas = res.json();
+                    this.selecionarMesa();
 
-                    //CARREGANDO MESAS
-                    this.HttpService.JSON_GET(`/mesas/${this.StorageService.getItem('i')}/atendente/${this.StorageService.getItem('u')}`, false, true, 'json')
-                      .then(
-                        (res) => {
-                          this.itensMesas = res.json();
-                          this.selecionarMesa();
-
-                          loading.dismiss();
-                        },
-                        (error) => {
-                          loading.dismiss();
-                          this.AlertService.showAlert('ERRO', JSON.parse(error._body));
-                        }
-                      )
+                    loading.dismiss();
                   },
                   (error) => {
                     loading.dismiss();

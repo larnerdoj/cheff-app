@@ -28,6 +28,7 @@ import { TopoComponent } from '../components/topo/topo';
 import { ModalMesasPage } from '../components/modal/modal-mesas';
 import { ModalComandasPage } from '../components/modal/modal-comandas';
 import { ModalCategoriasPage } from '../components/modal/modal-categorias';
+import { ModalItensComandaPage } from '../components/modal/modal-itens-comanda';
 
 /***********************************************************
 SERVICES
@@ -59,7 +60,8 @@ import { CardapioPage } from '../pages/cardapio/cardapio';
     TopoComponent,
     ModalMesasPage,
     ModalComandasPage,
-    ModalCategoriasPage
+    ModalCategoriasPage,
+    ModalItensComandaPage
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,8 @@ import { CardapioPage } from '../pages/cardapio/cardapio';
 
     ModalMesasPage,
     ModalComandasPage,
-    ModalCategoriasPage
+    ModalCategoriasPage,
+    ModalItensComandaPage
   ],
   providers: [
     StatusBar,

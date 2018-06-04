@@ -8,7 +8,7 @@ Page Home
 COMPONENTS
 ***********************************************************/
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 
 /***********************************************************
 SERVICES
@@ -21,6 +21,8 @@ PAGES
 ***********************************************************/
 import { MesasPage } from '../mesas/mesas';
 import { NovaComandaPage } from '../nova-comanda/nova-comanda';
+import { HttpService } from '../../globals/http';
+import { AlertService } from '../../globals/alert';
 
 @Component({
   selector: 'page-home',
@@ -33,13 +35,20 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
+    public LoadingController: LoadingController,
     private GlobalsService: GlobalsService,
-    private StorageService: StorageService
+    private StorageService: StorageService,
+    private HttpService: HttpService,
+    private AlertService: AlertService
   ){}
 
   ionViewDidLoad() {
+
+    //CARREGANDO ITENS INICIAIS
     this.urlImg = this.GlobalsService.getImgRandom();
     this.nomeUser = this.StorageService.getItem('n');
+
+    this.getConfiguracoes();
   }
 
   verMesas(){
@@ -47,6 +56,37 @@ export class HomePage {
   }
   novaComanda(){
     return this.navCtrl.push(NovaComandaPage, {}, { animate: true, direction: 'forward' });
+  }
+
+  getConfiguracoes(){
+
+    //EXECUTA JSON
+    let loading = this.LoadingController.create({
+      spinner: 'crescent',
+      content: 'Carregando informações'
+    });
+    loading.present().then(() => {
+      this.HttpService.JSON_GET(`/configuracoes/${this.StorageService.getItem('i')}`, false, true, 'json')
+        .then(
+          (res) => {
+            
+            this.GlobalsService.isTaxa = res.json().rate;
+            this.GlobalsService.typeTaxa = res.json().rate_type;
+            this.GlobalsService.vlTaxa = res.json().rate_vl;
+
+            this.GlobalsService.isCouvert = res.json().couvert;
+            this.GlobalsService.typeCouvert = res.json().couvert_type;
+            this.GlobalsService.vlCouvert = res.json().couvert_vl;
+
+            loading.dismiss();
+          },
+          (error) => {
+            loading.dismiss();
+            this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+          }
+        )
+
+    });
   }
 
 }
