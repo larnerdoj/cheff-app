@@ -12,6 +12,7 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/timeout';
 
 /***********************************************************
 SERVICES
@@ -23,6 +24,7 @@ export class HttpService {
 
     URL_api: string;
     URL_REQUEST: string;
+    timeOutMs: number = 5000;
 
     constructor(
         private http: Http,
@@ -53,7 +55,9 @@ export class HttpService {
     *************/
     JSON_POST(url, fields, auth: boolean, use_url_api: boolean, tipo_obj: string): Promise<any> {
         if (use_url_api === true) { this.URL_REQUEST = this.URL_api + url } else { this.URL_REQUEST = url }
-        return this.http.post(this.URL_REQUEST, fields, { headers: this.getHeader(auth, tipo_obj) }).toPromise()
+        return this.http.post(this.URL_REQUEST, fields, { headers: this.getHeader(auth, tipo_obj) })
+        .timeout(this.timeOutMs)
+        .toPromise()
     }
 
     /************
@@ -61,7 +65,9 @@ export class HttpService {
     *************/
     JSON_GET(url, auth: boolean, use_url_api: boolean, tipo_obj: string): Promise<any> {
         if (use_url_api === true) { this.URL_REQUEST = this.URL_api + url } else { this.URL_REQUEST = url }
-        return this.http.get(this.URL_REQUEST, { headers: this.getHeader(auth, tipo_obj) }).toPromise()
+        return this.http.get(this.URL_REQUEST, { headers: this.getHeader(auth, tipo_obj) })
+        .timeout(this.timeOutMs)
+        .toPromise()
     }
 
     /************
@@ -69,7 +75,9 @@ export class HttpService {
     *************/
     JSON_PUT(url, fields, auth: boolean, use_url_api: boolean, tipo_obj: string): Promise<any> {
         if (use_url_api === true) { this.URL_REQUEST = this.URL_api + url } else { this.URL_REQUEST = url }
-        return this.http.put(this.URL_REQUEST, fields, { headers: this.getHeader(auth, tipo_obj) }).toPromise()
+        return this.http.put(this.URL_REQUEST, fields, { headers: this.getHeader(auth, tipo_obj) })
+        .timeout(this.timeOutMs)
+        .toPromise()
     }
 
     /************
@@ -77,7 +85,9 @@ export class HttpService {
     *************/
     JSON_DELETE(url, auth: boolean, use_url_api: boolean, tipo_obj: string): Promise<any> {
         if (use_url_api === true) { this.URL_REQUEST = this.URL_api + url } else { this.URL_REQUEST = url }
-        return this.http.delete(this.URL_REQUEST, { headers: this.getHeader(auth, tipo_obj) }).toPromise()
+        return this.http.delete(this.URL_REQUEST, { headers: this.getHeader(auth, tipo_obj) })
+        .timeout(this.timeOutMs)
+        .toPromise()
     }
 
 }

@@ -13,7 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Injectable()
 export class GlobalsService {
 
-    VersaoAPP = '1.0.8';
+    VersaoAPP = '1.0.9';
     lojaAndroid = 'https://play.google.com/store/apps/details?id=innsere.app.cheff.com.br';
     lojaApple = '';
     lojaWindows = '';

@@ -133,7 +133,13 @@ export class LoginPage {
         },
           (error) => {
             loading.dismiss();
-            this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+            this.navCtrl.setRoot(LoginPage, {}, { animate: true, direction: 'back' });
+            
+            if(error.name && error.name === 'TimeoutError'){
+              this.AlertService.showAlert('ERRO', 'Não foi possível se conectar ao servidor!');
+            }else{
+              this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+            }
           }
         )
 

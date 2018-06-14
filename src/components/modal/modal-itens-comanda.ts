@@ -148,7 +148,7 @@ export class ModalItensComandaPage {
               descricao: this.itensComanda[index].prod_desc,
               qtd: 1,
               vl_unit: this.itensComanda[index].vl_unit,
-              print_item: `${this.itensComanda[index].print_item}/${this.itensComanda[index].print_ip}`,
+              print_item: this.itensComanda[index].print_item,
               obs: this.itensComanda[index].obs
             }];
             let itensComanda = [];
