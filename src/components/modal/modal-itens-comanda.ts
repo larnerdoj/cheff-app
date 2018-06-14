@@ -95,7 +95,7 @@ export class ModalItensComandaPage {
                         prod_id: value.prod_id,
                         qtd: 0,
                         vl_unit: value.vl_unit,
-                        print_item: value.print_item,
+                        print_item: `${value.print_item}/${value.print_ip}`,
                       };
                       itensComandaPrintGroup.push(res[value.prod_code])
                     }
@@ -148,7 +148,7 @@ export class ModalItensComandaPage {
               descricao: this.itensComanda[index].prod_desc,
               qtd: 1,
               vl_unit: this.itensComanda[index].vl_unit,
-              print_item: this.itensComanda[index].print_item,
+              print_item: `${this.itensComanda[index].print_item}/${this.itensComanda[index].print_ip}`,
               obs: this.itensComanda[index].obs
             }];
             let itensComanda = [];

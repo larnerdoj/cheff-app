@@ -217,7 +217,10 @@ export class CardapioPage {
 
           filtro = this.itensFull.filter(function (o) {
             return Object.keys(o).some(function (k) {
-              return o[k].toString().toLowerCase().indexOf(val) != -1 || !val;
+              if(o[k] === null){}
+              else{
+                return o[k].toString().toLowerCase().indexOf(val) != -1 || !val;
+              }
             })
           })
 
@@ -243,7 +246,7 @@ export class CardapioPage {
       descricao: item.descricao,
       qtd: this.qtdInicial,
       vl_unit: item.valor,
-      print_item: item.print_item,
+      print_item: `${item.print_item}/${item.print_ip}`,
       obs: null
     }];
     this.itensComanda.push(objAdd[0]);
