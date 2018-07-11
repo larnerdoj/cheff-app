@@ -151,10 +151,10 @@ export class CardapioPage {
   /************
   SELECIONAR COMANDA
   *************/
-  selecionarComanda() {
+  /* selecionarComanda() {
     let modalComanda = this.ModalController.create(ModalComandasPage, {itens: this.itensMesas});
     modalComanda.present();
-  }
+  } */
 
   /************
   SELECIONA SEGMENTO DE BUSCA
@@ -246,6 +246,9 @@ export class CardapioPage {
       descricao: item.descricao,
       qtd: this.qtdInicial,
       vl_unit: item.valor,
+      is_promotion: item.is_promotion,
+      vl_promotion: item.vl_promotion,
+      vl_rate_promotion: item.vl_rate_promotion,
       print_item: `${item.print_item}/${item.print_ip}`,
       obs: null
     }];
@@ -443,15 +446,25 @@ export class CardapioPage {
       print_item = this.itensComanda[i].print_item;
 
       let itemImpressao = {};
+      itemImpressao['CONFIG'] = {};
+      itemImpressao['CONFIG']['qtd_vias'] = this.GlobalsService.qtdVias;
+
       itemImpressao['Header'] = this.StorageService.getItem('n');
       
       itemImpressao['Content'] = {};
       itemImpressao['Content'][0] = `MESA ${this.itemCarregado.mesa} / ${this.itemCarregado.cliente}`;
       itemImpressao['Content'][1] = `(${this.itensComanda[i].qtd}x) - ${this.itensComanda[i].descricao}`;
       itemImpressao['Content'][2] = this.itensComanda[i].obs;
+
+      let vlTotal;
+      if(this.itensComanda[i].is_promotion === 1){
+        vlTotal = this.itensComanda[i].qtd * this.itensComanda[i].vl_promotion;
+      }else{
+        vlTotal = this.itensComanda[i].qtd * this.itensComanda[i].vl_unit;
+      }
       
       itemImpressao['Footer'] = {};
-      itemImpressao['Footer'][0] = this.CurrencyPipe.transform(this.itensComanda[i].qtd * this.itensComanda[i].vl_unit, 'BRL');
+      itemImpressao['Footer'][0] = this.CurrencyPipe.transform(Number((vlTotal).toFixed(2)), 'BRL');
       itemImpressao['Footer'][1] = this.CurrencyPipe.transform(saldoCliente, 'BRL');
       itemImpressao['Footer'][2] = this.itemCarregado.atendente;
       itemImpressao['Footer'][3] = this.DatePipe.transform(Date.now(), 'dd/MM/yyyy, H:mm');

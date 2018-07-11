@@ -20,7 +20,7 @@
 
     <img [src]="urlImg" />
     <div class="card-title">
-      <button ion-button round outline large color="light" (click)="selecionarComanda()">
+      <button ion-button round outline large color="light">
         <strong>MESA {{this.GlobalsService.comandaSelecionada.mesa}}</strong>
       </button>
       <span class="card-subtitle">
@@ -100,7 +100,8 @@
 
           <h2>{{item.descricao}}</h2>
           <p>
-            {{item.vl_unit | currency:'BRL':'1.2-2' }}
+            <span *ngIf="item.is_promotion">{{item.vl_promotion | currency:'BRL':'1.2-2'}}<br></span><span
+            [ngClass]="{'tachado': item.is_promotion}">{{item.vl_unit | currency:'BRL':'1.2-2'}}</span>
             <br> COD:{{item.codigo}}
             <span *ngIf="item.obs !== null">
               <br>

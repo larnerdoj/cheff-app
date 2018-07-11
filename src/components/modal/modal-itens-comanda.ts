@@ -14,8 +14,8 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 /***********************************************************
 SERVICES
 ***********************************************************/
-import { GlobalsService } from '../../globals/globals';
 import { HttpService } from '../../globals/http';
+import { GlobalsService } from '../../globals/globals';
 import { StorageService } from '../../globals/storage';
 import { AlertService } from '../../globals/alert';
 
@@ -30,6 +30,7 @@ export class ModalItensComandaPage {
   itensComanda: any;
 
   totalPedido: number = 0;
+  novaQtd: number = 1;
 
   constructor(
     public NavController: NavController,
@@ -38,10 +39,10 @@ export class ModalItensComandaPage {
     public LoadingController: LoadingController,
     private CurrencyPipe: CurrencyPipe,
     private DatePipe: DatePipe,
-    private GlobalsService: GlobalsService,
     private HttpService: HttpService,
     private StorageService: StorageService,
-    private AlertService: AlertService
+    private AlertService: AlertService,
+    private GlobalsService: GlobalsService,
   ){}
 
   ionViewDidLoad() {
@@ -95,6 +96,9 @@ export class ModalItensComandaPage {
                         prod_id: value.prod_id,
                         qtd: 0,
                         vl_unit: value.vl_unit,
+                        is_promotion: value.is_promotion,
+                        vl_promotion: value.vl_promotion,
+                        vl_rate_promotion: value.vl_rate_promotion,
                         print_item: `${value.print_item}/${value.print_ip}`,
                       };
                       itensComandaPrintGroup.push(res[value.prod_code])
@@ -129,64 +133,106 @@ export class ModalItensComandaPage {
   addItemPedido(index) {
 
     let alert = this.alertCtrl.create({
-      title: 'Efetuar pedido?',
-      message: `Adicionar mais um: ${this.itensComanda[index].prod_desc} ao pedido?`,
+      title: `Informe a quantidade`,
+      inputs: [
+        {
+          name: 'qtd',
+          type: 'number',
+          value: '1'
+        },
+      ],
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {}
+          handler: data => {}
         },
         {
-          text: 'Confirmar',
-          handler: () => {
+          text: 'OK',
+          handler: data => {
 
-            //CRIANDO OBJETO
-            let objAdd = [{
-              id: this.itensComanda[index].prod_id,
-              codigo: this.itensComanda[index].prod_code,
-              descricao: this.itensComanda[index].prod_desc,
-              qtd: 1,
-              vl_unit: this.itensComanda[index].vl_unit,
-              print_item: this.itensComanda[index].print_item,
-              obs: this.itensComanda[index].obs
-            }];
-            let itensComanda = [];
-            itensComanda.push(objAdd[0]);
+            this.novaQtd = Number(data.qtd);
+            if(this.novaQtd < 1){
+              this.AlertService.showAlert('ERRO', 'Digite um número maior que 0');
 
-            //CRIANDO OBJETO COM TOTAL
-            this.itensComanda[index].qtd = 1;
-            let objPost = [{
-              total: Number((this.totalPedido + this.itensComanda[index].vl_unit).toFixed(2)),
-              itens: itensComanda
-            }];
-
-            //EXECUTA JSON
-            let loading = this.LoadingController.create({
-              spinner: 'crescent',
-              content: 'Enviando pedido'
-            });
-            loading.present().then(() => {
-
-              this.HttpService.JSON_POST(`/comandas/${this.dadosComanda.id}/itens/${this.StorageService.getItem('i')}`, objPost, false, true, 'json')
-                .then(
-                  (res) => {
-                    this.enviaImpressao(objAdd);
-                    loading.dismiss();
-                  },
-                  (error) => {
-                    loading.dismiss();
-                    this.AlertService.showAlert('ERRO', JSON.parse(error._body));
-                  }
-                )
-
-            });
+            }else{
+              this.confirmaQtdItem(index);
+            }
 
           }
         }
       ]
     });
     alert.present();
+
+  }
+
+  /************
+  CONFIRMA QTD ITEM
+  *************/
+  confirmaQtdItem(index) {
+
+    let alert = this.alertCtrl.create({
+    title: 'Efetuar pedido?',
+    message: `Adicionar mais ${this.novaQtd} ${this.itensComanda[index].prod_desc} ao pedido?`,
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {}
+      },
+      {
+        text: 'Confirmar',
+        handler: () => {
+
+          //CRIANDO OBJETO
+          let objAdd = [{
+            id: this.itensComanda[index].prod_id,
+            codigo: this.itensComanda[index].prod_code,
+            descricao: this.itensComanda[index].prod_desc,
+            qtd: this.novaQtd,
+            vl_unit: this.itensComanda[index].vl_unit,
+            is_promotion: this.itensComanda[index].is_promotion,
+            vl_promotion: this.itensComanda[index].vl_promotion,
+            vl_rate_promotion: this.itensComanda[index].vl_rate_promotion,
+            print_item: this.itensComanda[index].print_item,
+            obs: this.itensComanda[index].obs
+          }];
+          let itensComanda = [];
+          itensComanda.push(objAdd[0]);
+
+          //CRIANDO OBJETO COM TOTAL
+          this.itensComanda[index].qtd = 1;
+          let objPost = [{
+            total: Number((this.totalPedido + this.itensComanda[index].vl_unit).toFixed(2)),
+            itens: itensComanda
+          }];
+
+          //EXECUTA JSON
+          let loading = this.LoadingController.create({
+            spinner: 'crescent',
+            content: 'Enviando pedido'
+          });
+          loading.present().then(() => {
+
+            this.HttpService.JSON_POST(`/comandas/${this.dadosComanda.id}/itens/${this.StorageService.getItem('i')}`, objPost, false, true, 'json')
+              .then(
+                (res) => {
+                  this.enviaImpressao(objAdd);
+                  loading.dismiss();
+                },
+                (error) => {
+                  loading.dismiss();
+                  this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+                }
+              )
+
+          });
+
+        }
+      }
+    ]
+  });
+  alert.present();
 
   }
 
@@ -207,6 +253,9 @@ export class ModalItensComandaPage {
     print_item = obj[0].print_item;
 
     let itemImpressao = {};
+    itemImpressao['CONFIG'] = {};
+    itemImpressao['CONFIG']['qtd_vias'] = this.GlobalsService.qtdVias;
+
     itemImpressao['Header'] = this.StorageService.getItem('n');
     
     itemImpressao['Content'] = {};

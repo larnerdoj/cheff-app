@@ -57,6 +57,8 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-inappbrowser": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   }
 }

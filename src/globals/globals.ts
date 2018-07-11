@@ -13,7 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Injectable()
 export class GlobalsService {
 
-    VersaoAPP = '1.0.9';
+    VersaoAPP = '2.0.0';
     lojaAndroid = 'https://play.google.com/store/apps/details?id=innsere.app.cheff.com.br';
     lojaApple = '';
     lojaWindows = '';
@@ -25,6 +25,8 @@ export class GlobalsService {
     isCouvert: boolean = null;
     typeCouvert: string = null;
     vlCouvert: number = null;
+
+    qtdVias: number = null;
 
     mesaSelecionada = {
         id: null,

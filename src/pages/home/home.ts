@@ -80,6 +80,8 @@ export class HomePage {
             this.GlobalsService.typeCouvert = res.json().couvert_type;
             this.GlobalsService.vlCouvert = res.json().couvert_vl;
 
+            this.GlobalsService.qtdVias = res.json().qtd_vias;
+
             loading.dismiss();
           },
           (error) => {

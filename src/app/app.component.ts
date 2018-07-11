@@ -63,7 +63,7 @@ export class CheffApp {
       this.HttpService.JSON_GET(`/versao`, true, true, 'json')
         .then(
           (res) => {
-            loading.dismiss();
+
             if(res.json().APPGARCOM === this.GlobalsService.VersaoAPP){
               
               //VERIFICANDO SE USUARIO ESTA LOGADO E TOKEN VALIDO
@@ -78,39 +78,33 @@ export class CheffApp {
                 || !this.StorageService.getItem('p_finish')
                 || this.StorageService.getItem('p_finish') === null
               ){
+                loading.dismiss();
                 this.rootPage = LoginPage;
                 this.StorageService.clear();
 
               }else{
 
                 //EXECUTA JSON
-                let loading = this.LoadingController.create({
-                  spinner: 'crescent',
-                  content: 'Verificando usuário'
-                });
-                loading.present().then(() => {
-
-                  this.HttpService.JSON_GET(`/atendentes/auth/token/${this.StorageService.getItem('u')}`, true, true, 'json')
-                    .then(
-                      (res) => {
-                        if(res.json() === true){ this.rootPage = HomePage }
-                        else{
-                          this.StorageService.clear();
-                          this.rootPage = LoginPage;
-                        }
-                        loading.dismiss();
-                      },
-                      (error) => {
-                        loading.dismiss();
-                        this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+                this.HttpService.JSON_GET(`/atendentes/auth/token/${this.StorageService.getItem('u')}`, true, true, 'json')
+                  .then(
+                    (res) => {
+                      if(res.json() === true){ this.rootPage = HomePage }
+                      else{
+                        this.StorageService.clear();
+                        this.rootPage = LoginPage;
                       }
-                    )
-
-                });
+                      loading.dismiss();
+                    },
+                    (error) => {
+                      loading.dismiss();
+                      this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+                    }
+                  )
 
               }
 
             }else{
+              loading.dismiss();
               this.rootPage = LoginPage;
 
               //REDIRECIONANDO PARA LOJA
