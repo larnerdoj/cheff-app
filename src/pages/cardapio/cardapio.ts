@@ -19,7 +19,7 @@ import { StorageService } from '../../globals/storage';
 import { GlobalsService } from '../../globals/globals';
 import { AlertService } from '../../globals/alert';
 
-import { ModalComandasPage } from '../../components/modal/modal-comandas';
+/* import { ModalComandasPage } from '../../components/modal/modal-comandas'; */
 import { ModalCategoriasPage } from '../../components/modal/modal-categorias';
 import { ModalItensComandaPage } from '../../components/modal/modal-itens-comanda';
 
@@ -244,6 +244,7 @@ export class CardapioPage {
       id: item.id,
       codigo: item.codigo,
       descricao: item.descricao,
+      categoria: item.categoria,
       qtd: this.qtdInicial,
       vl_unit: item.valor,
       is_promotion: item.is_promotion,
@@ -453,6 +454,7 @@ export class CardapioPage {
       
       itemImpressao['Content'] = {};
       itemImpressao['Content'][0] = `MESA ${this.itemCarregado.mesa} / ${this.itemCarregado.cliente}`;
+      itemImpressao['Content'][3] = this.itensComanda[i].categoria;
       itemImpressao['Content'][1] = `(${this.itensComanda[i].qtd}x) - ${this.itensComanda[i].descricao}`;
       itemImpressao['Content'][2] = this.itensComanda[i].obs;
 

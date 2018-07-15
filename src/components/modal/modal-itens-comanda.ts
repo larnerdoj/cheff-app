@@ -92,6 +92,7 @@ export class ModalItensComandaPage {
                         com_id: value.com_id,
                         obs: value.obs,
                         prod_desc: value.prod_desc,
+                        prod_cat: value.prod_cat,
                         prod_code: value.prod_code,
                         prod_id: value.prod_id,
                         qtd: 0,
@@ -189,6 +190,7 @@ export class ModalItensComandaPage {
             id: this.itensComanda[index].prod_id,
             codigo: this.itensComanda[index].prod_code,
             descricao: this.itensComanda[index].prod_desc,
+            categoria: this.itensComanda[index].prod_cat,
             qtd: this.novaQtd,
             vl_unit: this.itensComanda[index].vl_unit,
             is_promotion: this.itensComanda[index].is_promotion,
@@ -260,6 +262,7 @@ export class ModalItensComandaPage {
     
     itemImpressao['Content'] = {};
     itemImpressao['Content'][0] = `MESA ${this.dadosComanda.mesa} / ${this.dadosComanda.name}`;
+    itemImpressao['Content'][3] = obj[0].categoria;
     itemImpressao['Content'][1] = `(${obj[0].qtd}x) - ${obj[0].descricao}`;
     itemImpressao['Content'][2] = obj[0].obs;
     
