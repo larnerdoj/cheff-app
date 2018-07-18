@@ -29,14 +29,16 @@
         </ion-item>
     </ion-list>
 
-    <ion-footer>
-        <div padding>
-            <h1 text-center>{{dadosComanda?.vl_total | currency:'BRL':'1.2-2'}}</h1>
-            <button type="button" large block
-            ion-button color="danger" (click)="fechaModal()">
-                Cancelar
-            </button>
-        </div>
-    </ion-footer>
+    <br><br><br>
 
 </ion-content>
+
+<ion-footer>
+    <div padding>
+        <h1 text-center>{{dadosComanda?.vl_total | currency:'BRL':'1.2-2'}}</h1>
+        <button type="button" large block
+        ion-button color="danger" (click)="fechaModal()">
+            Cancelar
+        </button>
+    </div>
+</ion-footer>

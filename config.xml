@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="20010" id="innsere.app.cheff.com.br" version="2.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="20020" id="innsere.app.cheff.com.br" version="2.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Cheff Garçom</name>
     <description>Aplicativo de Gestão Gastronômica do Garçom</description>
     <author email="contato@innsere.com.br" href="http://innsere.com/">INNSERE</author>
