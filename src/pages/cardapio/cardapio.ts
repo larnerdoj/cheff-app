@@ -491,4 +491,57 @@ export class CardapioPage {
 
   }
 
+  gerarQRCode() {
+
+    let alert = this.alertCtrl.create({
+        title: 'Gerar acesso ao App?',
+        message: 'Tem certeza que deseja gerar o acesso ao APP do Cliente!',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {}
+          },
+          {
+            text: 'Gerar',
+            handler: () => {
+
+              console.log(this.itemCarregado);
+              
+              //IMPRESSAO QR CODE
+              let itemImpressao = {};
+              itemImpressao['Content'] = {};
+              itemImpressao['Content'][0] = `MESA ${this.itemCarregado.mesa} / ${this.itemCarregado.cliente.toUpperCase()}`;
+              itemImpressao['Content'][1] = this.itemCarregado.pedido;
+
+              //EXECUTA JSON
+              let loading = this.LoadingController.create({
+                spinner: 'crescent',
+                content: 'Gerando acesso'
+              });
+              loading.present().then(() => {
+
+                let url_api = `/impressao/qr-code/${this.StorageService.getItem('p')}`;
+
+                this.HttpService.JSON_POST(`/impressao/qr-code/ELGIN-1/null`, itemImpressao, false, true, 'json')
+                  .then(
+                    (res) => {
+                      loading.dismiss();
+                    },
+                    (error) => {
+                      loading.dismiss();
+                      this.AlertService.showAlert('ERRO', JSON.parse(error._body));
+                    }
+                  )
+
+              });
+
+            }
+          }
+        ]
+      });
+      alert.present();
+
+  }
+
 }

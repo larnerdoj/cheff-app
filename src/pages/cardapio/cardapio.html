@@ -134,6 +134,7 @@
   <div padding>
     <button type="button" large *ngIf="itensComanda.length > 0" ion-button block (click)="confirmarPedido()">Enviar pedido</button>
     <button type="button" large ion-button block color="danger" (click)="cancelarPedido()">Cancelar pedido</button>
+    <button type="button" large ion-button block color="info" (click)="gerarQRCode()">Gerar acesso</button>
   </div>
 
 </ion-content>
