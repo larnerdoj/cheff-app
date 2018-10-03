@@ -505,8 +505,6 @@ export class CardapioPage {
           {
             text: 'Gerar',
             handler: () => {
-
-              console.log(this.itemCarregado);
               
               //IMPRESSAO QR CODE
               let itemImpressao = {};
@@ -520,8 +518,6 @@ export class CardapioPage {
                 content: 'Gerando acesso'
               });
               loading.present().then(() => {
-
-                let url_api = `/impressao/qr-code/${this.StorageService.getItem('p')}`;
 
                 this.HttpService.JSON_POST(`/impressao/qr-code/ELGIN-1/null`, itemImpressao, false, true, 'json')
                   .then(
